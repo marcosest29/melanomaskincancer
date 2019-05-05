@@ -2,6 +2,22 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <iostream>
 using namespace cv;
+using namespace std;
+Mat paso1(Mat img_rgb){
+	Mat img_hsv,eqv,hsveq,out;
+	cvtColor(img_rgb,img_hsv,CV_RGB2HSV);
+	vector<cv::Mat> channels;
+	split(img_hsv, channels);
+	equalizeHist(channels[2], eqv );
+	channels[2]=eqv;
+	merge(channels,hsveq);
+	cvtColor(hsveq,out,CV_HSV2RGB);
+	cvtColor(out,out,CV_RGB2GRAY);
+	Mat image_blurred_with_21x21_kernel;
+    	GaussianBlur(out, image_blurred_with_11x11_kernel, Size(11, 11), 0);
+	Mat binary;
+	threshold( out, binary, 57, max_BINARY_value,1 );
+    	return binary;}
 
 void generateHistogram(Mat image, int histogram[])
 {
